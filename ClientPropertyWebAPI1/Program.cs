@@ -10,8 +10,10 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IPropertyRepository, CachedPropertyRepository>();
+        builder.Services.AddScoped<PropertyRepository>();
+        builder.Services.AddScoped<IUserRepository, CachedUserRepository>();
+        builder.Services.AddScoped<UserRepository>();
         builder.Services.AddScoped<IPropertyService, PropertyService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddControllers();
@@ -21,6 +23,7 @@ internal class Program
         {
             options.UseNpgsql(builder.Configuration.GetConnectionString("AppDbContext"));
         });
+        builder.Services.AddMemoryCache();
 
         var app = builder.Build();
 
