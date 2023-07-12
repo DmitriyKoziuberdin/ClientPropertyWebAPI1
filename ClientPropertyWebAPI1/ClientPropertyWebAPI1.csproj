@@ -19,6 +19,7 @@
     <ProjectReference Include="..\ClientProperty.ApplicationService\ClientProperty.ApplicationService.csproj" />
     <ProjectReference Include="..\ClientProperty.Domain\ClientProperty.Domain.csproj" />
     <ProjectReference Include="..\ClientProperty.Infrastructure\ClientProperty.Infrastructure.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>

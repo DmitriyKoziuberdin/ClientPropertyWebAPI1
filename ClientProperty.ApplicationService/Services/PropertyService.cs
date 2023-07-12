@@ -2,16 +2,19 @@
 using ClientProperty.ApplicationService.Models.Request;
 using ClientProperty.ApplicationService.Models.Response;
 using ClientProperty.Domain.Entities;
+using Common.Exceptions;
 
 namespace ClientProperty.ApplicationService.Services
 {
     public class PropertyService : IPropertyService
     {
         protected readonly IPropertyRepository _propertyRepository;
+        protected readonly IUserRepository _userRepository;
 
-        public PropertyService(IPropertyRepository propertyRepository)
+        public PropertyService(IPropertyRepository propertyRepository, IUserRepository userRepository)
         {
             _propertyRepository = propertyRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<List<Property>> GetAllProperties()
@@ -21,6 +24,11 @@ namespace ClientProperty.ApplicationService.Services
 
         public async Task<PropertyResponseModel> GetPropertyById(long id)
         {
+            var isExist = await _propertyRepository.AnyPropertyById(id);
+            if (!isExist)
+            {
+                throw new PropertyNotFoundException($"Property with this ID: {id} not found.");
+            }
             var propertyById = await _propertyRepository.GetPropertyById(id);
             var propertyResponse = new PropertyResponseModel
             {
@@ -66,6 +74,11 @@ namespace ClientProperty.ApplicationService.Services
                 InitialValue = propertyRequestModel.InitialValue,
                 PriceLossSelectedPeriod = propertyRequestModel.PriceLossSelectedPeriod
             };
+            var isExist = await _propertyRepository.AnyPropertyById(property.Id);
+            if (!isExist)
+            {
+                throw new PropertyNotFoundException($"Property with this ID: {property.Id} not found.");
+            }
             await _propertyRepository.UpdateProperty(property);
             var propertyResponse = await _propertyRepository.GetPropertyById(property.Id);
             return new PropertyUpdateResponseModel
@@ -81,11 +94,26 @@ namespace ClientProperty.ApplicationService.Services
 
         public async Task DeleteProperty(long id)
         {
+            var isExist = await _propertyRepository.AnyPropertyById(id);
+            if (!isExist)
+            {
+                throw new PropertyNotFoundException($"Property with this ID: {id} not found.");
+            }
             await _propertyRepository.DeleteProperty(id);
         }
 
         public async Task AddUser(long propertyId, long userId)
         {
+            var isExistForPropertyId = await _propertyRepository.AnyPropertyById(propertyId);
+            if (!isExistForPropertyId)
+            {
+                throw new PropertyNotFoundException($"Property with this ID: {propertyId} not found.");
+            }
+            var isExistForUSerId = await _userRepository.AnyUserById(propertyId);
+            if (!isExistForUSerId)
+            {
+                throw new PropertyNotFoundException($"User with this ID: {userId} not found.");
+            }
             await _propertyRepository.AddUser(propertyId, userId);
         }
 

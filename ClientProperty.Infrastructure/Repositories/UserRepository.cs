@@ -44,5 +44,15 @@ namespace ClientProperty.Infrastructure.Repositories
             await _appDbContext.SaveChangesAsync();
             return deletedUser;
         }
+
+        public async Task<bool> AnyUserById(long id)
+        {
+            return await _appDbContext.Users.AnyAsync(userId => userId.Id == id);   
+        }
+
+        public async Task<bool> AnyUserWithEmail(string userEmail)
+        {
+            return await _appDbContext.Users.AnyAsync(email => email.Email == userEmail);
+        }
     }
 }

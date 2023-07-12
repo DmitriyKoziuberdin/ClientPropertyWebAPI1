@@ -77,5 +77,10 @@ namespace ClientProperty.Infrastructure.Repositories
         {
             return await _propertyRepository.GetDaysPeriodsCountByYear();
         }
+
+        public async Task<bool> AnyPropertyById(long propertyId)
+        {
+            return await _propertyRepository.AnyPropertyById(propertyId);
+        }
     }
 }

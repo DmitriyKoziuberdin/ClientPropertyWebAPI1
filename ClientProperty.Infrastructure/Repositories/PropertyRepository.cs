@@ -57,6 +57,10 @@ namespace ClientProperty.Infrastructure.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
+        public async Task<bool> AnyPropertyById(long propertyId)
+        {
+            return await _appDbContext.Properties.AnyAsync(id => id.Id == propertyId);
+        }
 
         public async Task<IEnumerable<GetDaysOfPropertyOwnershipResponseModel>> GetDaysOfPropertyOwnership()
         {
