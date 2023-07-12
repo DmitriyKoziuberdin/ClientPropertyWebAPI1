@@ -2,6 +2,7 @@ using ClientProperty.ApplicationService.Interfaces;
 using ClientProperty.ApplicationService.Services;
 using ClientProperty.Domain;
 using ClientProperty.Infrastructure.Repositories;
+using Common.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
@@ -41,6 +42,7 @@ internal class Program
             var dbContext = scope.ServiceProvider.GetService<AppDbContext>()!;
             dbContext.Database.Migrate();
         }
+        app.UseMiddleware<ErrorHandlerMiddleware>();
 
         app.Run();
     }

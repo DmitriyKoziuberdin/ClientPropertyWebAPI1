@@ -9,5 +9,7 @@ namespace ClientProperty.ApplicationService.Interfaces
         Task<int> DeleteUser(long id);
         Task CreateUser(User user);
         Task UpdateUser(User user);
+        Task<bool> AnyUserById(long id);
+        Task<bool> AnyUserWithEmail(string userEmail);
     }
 }

@@ -2,6 +2,8 @@
 using ClientProperty.ApplicationService.Models.Request;
 using ClientProperty.ApplicationService.Models.Response;
 using ClientProperty.Domain.Entities;
+using Common.Exceptions;
+using System.Data;
 
 namespace ClientProperty.ApplicationService.Services
 {
@@ -21,6 +23,11 @@ namespace ClientProperty.ApplicationService.Services
 
         public async Task<UserResponseModel> GetUserById(long id)
         {
+            var isExist = await _userRepository.AnyUserById(id);
+            if (!isExist)
+            {
+                throw new UserNotFoundException($"User with this ID: {id} not found.");
+            }
             var userById = await _userRepository.GetUserById(id);
             var userResponse = new UserResponseModel
             {
@@ -35,6 +42,11 @@ namespace ClientProperty.ApplicationService.Services
 
         public async Task CreateUser(UserRequestModel userRequest)
         {
+            var isExist = await _userRepository.AnyUserWithEmail(userRequest.Email);
+            if (isExist)
+            {
+                throw new UserDuplicateEmail($"User with this Email - {userRequest.Email} already exist.");
+            }
             await _userRepository.CreateUser(new User
             {
                 Name = userRequest.Name,
@@ -54,6 +66,11 @@ namespace ClientProperty.ApplicationService.Services
                 Telephone = userRequest.Telephone,
                 Email = userRequest.Email
             };
+            var isExist = await _userRepository.AnyUserById(user.Id);
+            if (!isExist)
+            {
+                throw new UserNotFoundException($"User with this ID: {user.Id} not found.");
+            }
             await _userRepository.UpdateUser(user);
             var userResponse = await _userRepository.GetUserById(user.Id);
             return new UserResponseModel
@@ -68,6 +85,11 @@ namespace ClientProperty.ApplicationService.Services
 
         public async Task DeleteUser(long id)
         {
+            var isExist = await _userRepository.AnyUserById(id);
+            if (!isExist)
+            {
+                throw new UserNotFoundException($"User with this ID: {id} not found.");
+            }
             await _userRepository.DeleteUser(id);
         }
     }

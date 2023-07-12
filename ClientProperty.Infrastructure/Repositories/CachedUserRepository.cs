@@ -45,5 +45,15 @@ namespace ClientProperty.Infrastructure.Repositories
             _memoryCache.Remove(_cacheKey);
             return await _userRepository.DeleteUser(id);
         }
+
+        public async Task<bool> AnyUserById(long id)
+        {
+            return await _userRepository.AnyUserById(id);
+        }
+
+        public async Task<bool> AnyUserWithEmail(string userEmail)
+        {
+            return await _userRepository.AnyUserWithEmail(userEmail);
+        }
     }
 }
