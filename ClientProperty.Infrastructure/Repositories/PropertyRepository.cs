@@ -63,6 +63,7 @@ namespace ClientProperty.Infrastructure.Repositories
             var propertyDaysOwned = await _appDbContext.Properties.Select(propertyResponse => new GetDaysOfPropertyOwnershipResponseModel
             {
                 Id = propertyResponse.Id,
+                Name = propertyResponse.Name,
                 DaysOfPropertyOwnership = (DateTimeOffset.UtcNow - propertyResponse.PurchaseDate).Days
             }).ToListAsync();
 
@@ -74,7 +75,8 @@ namespace ClientProperty.Infrastructure.Repositories
             var period = 7;
             var propertyDaysOwned = await _appDbContext.Properties.Select(propertyResponse => new GetDaysPeriodsCountResponseModel
             {
-                Id= propertyResponse.Id,
+                Id = propertyResponse.Id,
+                Name = propertyResponse.Name,
                 PeriodsCount = (DateTimeOffset.UtcNow - propertyResponse.PurchaseDate).Days / period
             }).ToListAsync();
             return propertyDaysOwned;
@@ -86,6 +88,7 @@ namespace ClientProperty.Infrastructure.Repositories
             var propertyDaysOwned = await _appDbContext.Properties.Select(propertyResponse => new GetDaysPeriodsCountResponseModel
             {
                 Id= propertyResponse.Id,
+                Name = propertyResponse.Name,
                 PeriodsCount = (DateTimeOffset.UtcNow - propertyResponse.PurchaseDate).Days / period
             }).ToListAsync();
             return propertyDaysOwned;
@@ -97,6 +100,7 @@ namespace ClientProperty.Infrastructure.Repositories
             var propertyDaysOwned = await _appDbContext.Properties.Select(propertyResponse => new GetDaysPeriodsCountResponseModel
             {
                 Id= propertyResponse.Id,
+                Name = propertyResponse.Name,
                 PeriodsCount = (DateTimeOffset.UtcNow - propertyResponse.PurchaseDate).Days / period
             }).ToListAsync();
             return propertyDaysOwned;
@@ -106,6 +110,8 @@ namespace ClientProperty.Infrastructure.Repositories
         {
             var propertyCurrentValue = await _appDbContext.Properties.Select(propertyResponse => new GetCurrentPeriodResponseModel
             {
+                Id = propertyResponse.Id,
+                Name = propertyResponse.Name,
                 CurrentValue = propertyResponse.InitialValue - (propertyResponse.PriceLossSelectedPeriod * (DateTimeOffset.UtcNow - propertyResponse.PurchaseDate).Days)
             }).ToListAsync();
             return propertyCurrentValue;

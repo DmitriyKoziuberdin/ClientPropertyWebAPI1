@@ -37,15 +37,15 @@ namespace ClientPropertyWebAPI1.Controllers
         }
 
         [HttpPut]
-        public async Task<PropertyUpdateResponseModel> UpdateProperty(PropertyUpdateRequestModel propertyRequestModel)
+        public async Task<PropertyUpdateResponseModel> UpdateProperty([FromBody] PropertyUpdateRequestModel propertyRequestModel)
         {
             return await _propertyService.UpdateProperty(propertyRequestModel);
         }
 
-        [HttpDelete]
-        public async Task DeleteProperty(long id)
+        [HttpDelete("{categoryId:long}")]
+        public async Task DeleteProperty([FromRoute]long categoryId)
         {
-            await _propertyService.DeleteProperty(id);
+            await _propertyService.DeleteProperty(categoryId);
         }
 
         [HttpPost("{propertyId:long}/user/{userId:long}")]
@@ -55,31 +55,31 @@ namespace ClientPropertyWebAPI1.Controllers
             return Ok();
         }
 
-        [HttpGet("daysOfPropertyOwnership")]
+        [HttpGet("property/daysOfPropertyOwnership")]
         public async Task<IEnumerable<GetDaysOfPropertyOwnershipResponseModel>> GetDaysOfPropertyOwnership()
         {
             return await _propertyService.GetDaysOfPropertyOwnership();
         }
 
-        [HttpGet("daysPeriodsCountByWeek")]
+        [HttpGet("property/daysPeriodsCountByWeek")]
         public async Task<IEnumerable<GetDaysPeriodsCountResponseModel>> GetDaysPeriodsCountByWeek()
         {
             return await _propertyService.GetDaysPeriodsCountByWeek();
         }
 
-        [HttpGet("daysPeriodsCountByMonth")]
+        [HttpGet("property/daysPeriodsCountByMonth")]
         public async Task<IEnumerable<GetDaysPeriodsCountResponseModel>> GetDaysPeriodsCountByMonth()
         {
             return await _propertyService.GetDaysPeriodsCountByMonth();
         }
 
-        [HttpGet("daysPeriodsCountByYear")]
+        [HttpGet("property/daysPeriodsCountByYear")]
         public async Task<IEnumerable<GetDaysPeriodsCountResponseModel>> GetDaysPeriodsCountByYear()
         {
             return await _propertyService.GetDaysPeriodsCountByYear();
         }
 
-        [HttpGet("currentValue")]
+        [HttpGet("property/currentValue")]
         public async Task<IEnumerable<GetCurrentPeriodResponseModel>> GetCurrentValue()
         {
             return await _propertyService.GetCurrentValue();

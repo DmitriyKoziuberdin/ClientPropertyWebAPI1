@@ -24,27 +24,27 @@ namespace ClientPropertyWebAPI1.Controllers
         }
 
         [HttpGet("{id:long}")]
-        public async Task<UserResponseModel> GetUserById([FromRoute]long id)
+        public async Task<UserResponseModel> GetUserById([FromRoute] long id)
         {
             return await _userService.GetUserById(id);
         }
 
-        [HttpPost]
-        public async Task CreateUser(UserRequestModel userRequest)
+        [HttpPost("createUser")]
+        public async Task CreateUser([FromBody]UserRequestModel userRequest)
         {
             await _userService.CreateUser(userRequest);
         }
 
-        [HttpPut]
-        public async Task<UserResponseModel> UpdateUser(UserUpdateRequestModel userRequest)
+        [HttpPut("updateUser")]
+        public async Task<UserResponseModel> UpdateUser([FromBody]UserUpdateRequestModel userRequest)
         {
             return await _userService.UpdateUser(userRequest);
         }
 
-        [HttpDelete]
-        public async Task DeleteUser(long id)
+        [HttpDelete("{userId:long}")]
+        public async Task DeleteUser([FromRoute]long userId)
         {
-           await _userService.DeleteUser(id);
+           await _userService.DeleteUser(userId);
         }
     }
 }
